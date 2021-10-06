@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Recipe } from "./Recipe";
+import { RecipeCard } from "./RecipeCard";
 
-const RecipesContainer = () => {
+const RecipeGridDisplay = () => {
 	const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 	const [recipes, setRecipes] = useState(null);
@@ -21,9 +21,11 @@ const RecipesContainer = () => {
 	};
 
 	const displayRecipes = () => {
-		return recipes.map((recipe) => <Recipe recipe={recipe} />);
+		return recipes.map((recipe) => (
+			<RecipeCard key={`${recipe.id} - ${recipe.name}`} recipe={recipe} />
+		));
 	};
 	return <div>{recipes && displayRecipes()}</div>;
 };
 
-export default RecipesContainer;
+export default RecipeGridDisplay;

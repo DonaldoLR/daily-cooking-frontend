@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-export const Recipe = ({ recipe: { id, name, description, image } }) => {
+export const RecipeCard = ({ recipe: { id, name, description, image } }) => {
 	return (
 		<div>
 			<div className='card' style={{ width: "18rem" }}>

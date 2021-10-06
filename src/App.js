@@ -1,6 +1,6 @@
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
-import RecipesContainer from "./components/RecipesContainer";
+import RecipeGridDisplay from "./components/RecipesGridDisplay";
 
 function App() {
 	// const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -11,7 +11,7 @@ function App() {
 				<Navigation />
 				<Switch>
 					<Route exact path='/recipes'>
-						<RecipesContainer />
+						<RecipeGridDisplay />
 					</Route>
 				</Switch>
 			</div>
