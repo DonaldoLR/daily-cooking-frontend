@@ -33,7 +33,7 @@ const Navigation = () => {
 						</li>
 					</ul>
 				</div>
-				<NavLink className='btn btn-outline-success' to='/newRecipe'>
+				<NavLink className='btn btn-outline-success' to='/recipes/new'>
 					Create Recipe
 				</NavLink>
 			</div>
