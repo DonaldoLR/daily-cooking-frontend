@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FormIngredientInput from "./FormIngredientInput";
+import FormInstructionsInput from "./FormInstructionsInput";
 
 const NewRecipeForm = () => {
 	const initialFormData = {
@@ -9,12 +10,15 @@ const NewRecipeForm = () => {
 		instructions: "",
 	};
 	const [formData, setFormData] = useState(initialFormData);
-	const [inputFields, setInputFields] = useState([
+	const [ingredientFields, setIngredientFields] = useState([
 		{
 			ingredientID: 0,
 			ingredient_quantity: 0,
 			ingredient_description: "",
 		},
+	]);
+	const [instructionSteps, setInstructionSteps] = useState([
+		{ instruction: "" },
 	]);
 	return (
 		<form>
@@ -26,7 +30,7 @@ const NewRecipeForm = () => {
 			</div>
 			<div className='mb-3'>
 				<label htmlFor='recipeDescription' className='form-label'>
-					Recipe Title
+					Recipe Description
 				</label>
 				<textarea type='text' className='form-control' id='recipeDescription' />
 			</div>
@@ -37,8 +41,12 @@ const NewRecipeForm = () => {
 				<input type='text' className='form-control' id='recipeImage' />
 			</div>
 			<FormIngredientInput
-				inputFields={inputFields}
-				setInputFields={setInputFields}
+				ingredientFields={ingredientFields}
+				setIngredientFields={setIngredientFields}
+			/>
+			<FormInstructionsInput
+				instructionSteps={instructionSteps}
+				setInstructionSteps={setInstructionSteps}
 			/>
 			<button type='submit' className='btn btn-primary'>
 				Submit

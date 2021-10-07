@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const FormIngredientInput = ({ inputFields, setInputFields }) => {
+const FormIngredientInput = ({ ingredientFields, setIngredientFields }) => {
 	const BASE_URL = process.env.REACT_APP_BASE_URL;
 	// State used for available Ingredients
 	const [ingredientOptions, setIngredientOptions] = useState([]);
@@ -30,30 +30,34 @@ const FormIngredientInput = ({ inputFields, setInputFields }) => {
 		));
 	};
 	const handleInputChange = (idx, e) => {
-		const values = [...inputFields];
+		const values = [...ingredientFields];
 		if (e.target.name !== "ingredient_description") {
 			values[idx][e.target.name] = parseInt(e.target.value, 10);
 		} else {
 			values[idx][e.target.name] = e.target.value;
 		}
-		setInputFields(values);
+		setIngredientFields(values);
 	};
 	// Added another input box for another ingredient
-	const handleAddIngredient = (e) => {
-		setInputFields((data) => [
+	const handleAddIngredient = () => {
+		setIngredientFields((data) => [
 			...data,
 			{ ingredientID: 0, ingredient_quantity: 0, ingredient_description: "" },
 		]);
 	};
 	// Removes the input box
 	const handleRemoveIngredient = (idx, e) => {
-		const updatedFields = inputFields.filter(
-			(inputField, index) => index !== idx
-		);
-		setInputFields(updatedFields);
+		if (ingredientFields.length === 1) {
+			console.log("Cant remove all fields");
+		} else {
+			const updatedFields = ingredientFields.filter(
+				(inputField, index) => index !== idx
+			);
+			setIngredientFields(updatedFields);
+		}
 	};
-	const displayOptionTag = () => {
-		return inputFields.map((inputField, idx) => (
+	const displayIngredientInputs = () => {
+		return ingredientFields.map((inputField, idx) => (
 			<div className='input-group'>
 				<label className='form-label'>
 					Ingredient
@@ -106,7 +110,7 @@ const FormIngredientInput = ({ inputFields, setInputFields }) => {
 			</div>
 		));
 	};
-	return <>{displayOptionTag()}</>;
+	return <>{displayIngredientInputs()}</>;
 };
 
 export default FormIngredientInput;
