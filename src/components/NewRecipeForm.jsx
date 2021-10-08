@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
-
+import { useHistory } from "react-router-dom";
 const NewRecipeForm = () => {
+	const BASE_URL = process.env.REACT_APP_BASE_URL;
+	const history = useHistory();
 	const [formData, setFormData] = useState({
 		name: "",
 		description: "",
 		image: "",
 		instructions: [""],
 	});
+	const [serverErrors, setServerErrors] = useState([]);
 	const [availableIngredients, setAvailableIngredients] = useState([]);
 	const [recipeIngredients, setRecipeIngredients] = useState([
 		{ ingredientID: 0, ingredient_quantity: 0, ingredient_description: "" },
 	]);
 	useEffect(() => {
-		const BASE_URL = process.env.REACT_APP_BASE_URL;
 		fetch(`${BASE_URL}/ingredients`)
 			.then((res) => res.json())
 			.then(setAvailableIngredients);
-	}, []);
+	}, [BASE_URL]);
 	const handleInputChange = (index, e) => {
 		const key = e.target.name;
 		const value = e.target.value;
@@ -44,6 +46,8 @@ const NewRecipeForm = () => {
 				updatedIngredientValues[index][key] = value;
 			}
 			setRecipeIngredients(updatedIngredientValues);
+		} else {
+			setFormData({ ...formData, [key]: value });
 		}
 	};
 	const addInput = (e) => {
@@ -179,8 +183,108 @@ const NewRecipeForm = () => {
 			</div>
 		));
 	};
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		const instructions = formData.instructions
+			.map((instruction) => instruction.trim())
+			.join(". /n ");
+		const finalFormData = { ...formData, ["instructions"]: instructions };
+		const submitIngredients = async (
+			recipeID,
+			ingredientID,
+			quantity,
+			description
+		) => {
+			const response = await fetch(`${BASE_URL}/recipe_ingredients`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					recipe_id: recipeID,
+					ingredient_id: ingredientID,
+					ingredient_quantity: quantity,
+					ingredient_description: description,
+				}),
+			});
+			const data = await response.json();
+		};
+		fetch(`${BASE_URL}/recipes`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(finalFormData),
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.errors) {
+					setServerErrors(data.errors);
+				} else {
+					setFormData({
+						name: "",
+						description: "",
+						image: "",
+						instructions: [""],
+					});
+					recipeIngredients.forEach((ingredient) => {
+						submitIngredients(
+							data.id,
+							ingredient.ingredientID,
+							ingredient.ingredient_quantity,
+							ingredient.ingredient_description
+						);
+					});
+					history.push("/");
+				}
+			});
+	};
+	const displayErrors = () => {
+		return serverErrors.map((error, idx) => (
+			<div key={`${idx} - ${error}`} className='alert alert-danger'>
+				{error}
+			</div>
+		));
+	};
 	return (
-		<form>
+		<form onSubmit={handleSubmit}>
+			{displayErrors()}
+			<div className='mb-3'>
+				<label className='form-label'>
+					Recipe Title:
+					<input
+						type='text'
+						className='form-control'
+						name='name'
+						onChange={(e) => handleInputChange(null, e)}
+						value={formData.name}
+					/>
+				</label>
+			</div>
+			<div className='mb-3'>
+				<label className='form-label'>
+					Recipe Description:
+					<input
+						type='text'
+						className='form-control'
+						name='description'
+						onChange={(e) => handleInputChange(null, e)}
+						value={formData.description}
+					/>
+				</label>
+			</div>
+			<div className='mb-3'>
+				<label className='form-label'>
+					Recipe Image Preview:
+					<input
+						type='text'
+						className='form-control'
+						name='image'
+						onChange={(e) => handleInputChange(null, e)}
+						value={formData.image}
+					/>
+				</label>
+			</div>
 			{displayIngredientInputs()}
 			{displayInstructionInputs()}
 			<button type='submit' className='btn btn-primary'>
