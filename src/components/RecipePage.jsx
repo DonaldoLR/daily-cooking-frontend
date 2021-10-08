@@ -5,14 +5,16 @@ const RecipePage = () => {
 	const BASE_URL = process.env.REACT_APP_BASE_URL;
 	const { id } = useParams();
 	const [recipe, setRecipe] = useState(null);
+
 	useEffect(() => {
+		const fetchRecipe = async () => {
+			const response = await fetch(`${BASE_URL}/recipes/${id}`);
+			const data = await response.json();
+			setRecipe(data);
+		};
 		fetchRecipe();
-	}, []);
-	const fetchRecipe = async () => {
-		const response = await fetch(`${BASE_URL}/recipes/${id}`);
-		const data = await response.json();
-		setRecipe(data);
-	};
+	}, [BASE_URL, id]);
+
 	const displayRecipe = () => {
 		const {
 			name,

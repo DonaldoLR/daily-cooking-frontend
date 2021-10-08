@@ -1,24 +1,69 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-const NewRecipeForm = () => {
+import { useParams, useHistory } from "react-router-dom";
+
+const EditRecipeForm = () => {
 	const BASE_URL = process.env.REACT_APP_BASE_URL;
 	const history = useHistory();
+	const { id } = useParams();
 	const [formData, setFormData] = useState({
-		name: "",
-		description: "",
-		image: "",
+		name: "Loading...",
+		description: "Loading...",
+		image: "Loading...",
 		instructions: [""],
 	});
 	const [serverErrors, setServerErrors] = useState([]);
-	const [availableIngredients, setAvailableIngredients] = useState(null);
+	const [availableIngredients, setAvailableIngredients] = useState([]);
 	const [recipeIngredients, setRecipeIngredients] = useState([
-		{ ingredientID: 0, ingredient_quantity: 0, ingredient_description: "" },
+		{
+			ingredientID: 0,
+			ingredient_quantity: 0,
+			ingredient_description: "",
+			recipe_ingredient_id: 0,
+		},
 	]);
 	useEffect(() => {
 		fetch(`${BASE_URL}/ingredients`)
 			.then((res) => res.json())
 			.then(setAvailableIngredients);
 	}, [BASE_URL]);
+	useEffect(() => {
+		fetch(`${BASE_URL}/recipes/${id}`)
+			.then((res) => res.json())
+			.then((data) => {
+				let instructionsArray = data.instructions.split("/n ");
+				if (instructionsArray.length === 0) {
+					instructionsArray = [""];
+				}
+				let fetchedRecipeIngredientsArray =
+					data.ingredients_with_additional_data.map((ingredient) => {
+						return {
+							ingredientID: ingredient.id,
+							ingredient_quantity: ingredient.ingredient_quantity,
+							ingredient_description: ingredient.ingredient_description,
+							recipe_ingredient_id: ingredient.recipe_ingredient_id,
+						};
+					});
+				if (fetchedRecipeIngredientsArray.length === 0) {
+					fetchedRecipeIngredientsArray = [
+						{
+							ingredientID: 0,
+							ingredient_quantity: 0,
+							ingredient_description: "",
+							recipe_ingredient_id: 0,
+						},
+					];
+				}
+				setRecipeIngredients(fetchedRecipeIngredientsArray);
+				setFormData((prev) => {
+					return {
+						name: data.name,
+						description: data.description,
+						image: data.image,
+						instructions: instructionsArray,
+					};
+				});
+			});
+	}, [BASE_URL, id]);
 	const handleInputChange = (index, e) => {
 		const key = e.target.name;
 		const value = e.target.value;
@@ -55,7 +100,11 @@ const NewRecipeForm = () => {
 		if (key === "ingredient") {
 			const updatedIngredients = [
 				...recipeIngredients,
-				{ ingredientID: 0, ingredient_quantity: 0, ingredient_description: "" },
+				{
+					ingredientID: 0,
+					ingredient_quantity: 0,
+					ingredient_description: "",
+				},
 			];
 			setRecipeIngredients(updatedIngredients);
 		} else {
@@ -118,8 +167,7 @@ const NewRecipeForm = () => {
 		const sortedIngredients = availableIngredients.sort((a, b) => {
 			return a.name.localeCompare(b.name);
 		});
-
-		return sortedIngredients.map((ingredient) => (
+		return sortedIngredients.map((ingredient, idx) => (
 			<option
 				key={`${ingredient.id} - ${ingredient.name}`}
 				value={ingredient.id}
@@ -194,27 +242,31 @@ const NewRecipeForm = () => {
 			recipeID,
 			ingredientID,
 			quantity,
-			description
+			description,
+			recipe_ingredient_id
 		) => {
-			const response = await fetch(`${BASE_URL}/recipe_ingredients`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					recipe_id: recipeID,
-					ingredient_id: ingredientID,
-					ingredient_quantity: quantity,
-					ingredient_description: description,
-				}),
-			});
+			const response = await fetch(
+				`${BASE_URL}/recipe_ingredients/${recipe_ingredient_id}`,
+				{
+					method: "PATCH",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						recipe_id: recipeID,
+						ingredient_id: ingredientID,
+						ingredient_quantity: quantity,
+						ingredient_description: description,
+					}),
+				}
+			);
 			const data = await response.json();
 			if (data.errors) {
 				setServerErrors(data.errors);
 			}
 		};
-		fetch(`${BASE_URL}/recipes`, {
-			method: "POST",
+		fetch(`${BASE_URL}/recipes/${id}`, {
+			method: "PATCH",
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -225,23 +277,22 @@ const NewRecipeForm = () => {
 				if (data.errors) {
 					setServerErrors(data.errors);
 				} else {
+					setFormData({
+						name: "",
+						description: "",
+						image: "",
+						instructions: [""],
+					});
 					recipeIngredients.forEach((ingredient) => {
 						submitIngredients(
 							data.id,
 							ingredient.ingredientID,
 							ingredient.ingredient_quantity,
-							ingredient.ingredient_description
+							ingredient.ingredient_description,
+							ingredient.recipe_ingredient_id
 						);
 					});
-					if (serverErrors.length === 0) {
-						setFormData({
-							name: "",
-							description: "",
-							image: "",
-							instructions: [""],
-						});
-						history.push("/");
-					}
+					history.push("/");
 				}
 			});
 	};
@@ -251,6 +302,20 @@ const NewRecipeForm = () => {
 				{error}
 			</div>
 		));
+	};
+	const handleDelete = (e) => {
+		e.stopPropagation();
+		fetch(`${BASE_URL}/recipes/${id}`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				history.push("/");
+				console.log(data);
+			});
 	};
 	return (
 		<form onSubmit={handleSubmit}>
@@ -291,13 +356,20 @@ const NewRecipeForm = () => {
 					/>
 				</label>
 			</div>
-			{availableIngredients && displayIngredientInputs()}
+			{displayIngredientInputs()}
 			{displayInstructionInputs()}
-			<button type='submit' className='btn btn-primary'>
+			<button type='submit' className='btn btn-outline-primary'>
 				Submit
+			</button>
+			<button
+				type='button'
+				className='btn btn-outline-danger'
+				onClick={handleDelete}
+			>
+				Delete Recipe
 			</button>
 		</form>
 	);
 };
 
-export default NewRecipeForm;
+export default EditRecipeForm;

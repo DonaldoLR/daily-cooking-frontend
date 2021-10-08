@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import EditRecipeForm from "./components/EditRecipeForm";
 import Navigation from "./components/Navigation";
 import NewRecipeForm from "./components/NewRecipeForm";
 import RecipePage from "./components/RecipePage";
@@ -12,11 +13,14 @@ function App() {
 			<div className='App'>
 				<Navigation />
 				<Switch>
-					<Route exact path='/recipes'>
+					<Route exact path='/'>
 						<RecipeGridDisplay />
 					</Route>
 					<Route exact path='/recipes/new'>
 						<NewRecipeForm />
+					</Route>
+					<Route exact path='/recipes/:id/edit'>
+						<EditRecipeForm />
 					</Route>
 					<Route exact path='/recipes/:id'>
 						<RecipePage />
