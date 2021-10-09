@@ -1,3 +1,4 @@
+import "./styles/main.scss";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import EditRecipeForm from "./components/EditRecipeForm";
 import Navigation from "./components/Navigation";
@@ -13,7 +14,7 @@ function App() {
 			<div className='App'>
 				<Navigation />
 				<Switch>
-					<Route exact path='/'>
+					<Route exact path='/recipes'>
 						<RecipeGridDisplay />
 					</Route>
 					<Route exact path='/recipes/new'>
