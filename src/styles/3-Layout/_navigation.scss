@@ -1,16 +1,65 @@
 nav {
 	background-color: black;
-	p {
-		color: white;
-		font-family: "Ephesis", cursive;
-		font-size: 3em;
+	button {
+		justify-self: end;
+		z-index: 2;
 	}
+	.brand a {
+		color: white;
+		font-family: 'Ephesis', cursive;
+		font-size: 3em;
+		z-index: 2;
+	}
+	a {
+		color: white;
+		text-decoration: none;
+		font-size: 1em;
+		font-family: 'Roboto', sans-serif;
+		font-weight: 400;
+	}
+	ul {
+		display: flex;
+		list-style: none;
+		position: fixed;
+		left: 0;
+		background: black;
+		height: 100vh;
+		width: 100%;
+		flex-direction: column;
+		clip-path: circle(100px at 90% -10%);
+		-webkit-clip-path: circle(100px at 90% -10%);
+		transition: all 1s ease-out;
+		pointer-events: none;
+		align-items: center;
+		justify-content: center;
+
+		&.open {
+			clip-path: circle(1500px at 90% -10%);
+			-webkit-clip-path: circle(1500px at 90% -10%);
+			pointer-events: all;
+		}
+	}
+	li {
+		margin: 20px 0;
+	}
+
 	.container {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		align-content: center;
 	}
-	button {
-		justify-self: end;
+}
+@media screen and (min-width: $breakpoint-tablet) {
+	nav {
+		.hamburger {
+			display: none;
+		}
+		ul {
+			position: initial;
+			height: auto;
+			flex-direction: row;
+			clip-path: none;
+			justify-content: space-evenly;
+		}
 	}
 }
