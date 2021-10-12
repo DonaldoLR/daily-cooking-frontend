@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Ephesis&family=Roboto:ital,wght@0,400;0,700;1,300&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Ephesis&family=Raleway:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,300&display=swap');
 html {
 	font-size: 100%;
 } /*16px*/
@@ -56,4 +55,9 @@ small,
 .container {
 	margin: 0 auto;
 	max-width: 80%;
+}
+
+img {
+	height: auto;
+	max-width: 100%;
 }

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { RecipeCard } from "./RecipeCard";
+import React, { useEffect, useState } from 'react';
+import { RecipeCard } from './RecipeCard';
 
 const RecipeGridDisplay = () => {
 	const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -26,9 +26,26 @@ const RecipeGridDisplay = () => {
 	};
 	return (
 		<div className='container'>
-			<div className='row g-0'>{recipes && displayRecipes()}</div>
+			<div className='filter-buttons'>
+				<button>Food</button>
+				<button>Beverages</button>
+				<button>Dessert</button>
+				<button>Pudding</button>
+			</div>
+			<div className='recipe-card-grid'>{recipes && displayRecipes()}</div>
 		</div>
 	);
 };
 
 export default RecipeGridDisplay;
+{
+	/* <div className='container'>
+	<div className='filter-buttons'>
+		<button>Food</button>
+		<button>Beverages</button>
+		<button>Dessert</button>
+		<button>Pudding</button>
+	</div>
+	<div className='row g-0'>{recipes && displayRecipes()}</div>
+</div>; */
+}

@@ -23,7 +23,7 @@ const Navigation = () => {
 						<span className='hamburger-inner'></span>
 					</span>
 				</button>
-				<ul className={menuToggle && 'open'}>
+				<ul className={menuToggle ? 'open' : ''}>
 					<li>
 						<NavLink to='/' onClick={toggleMenu}>
 							Home

@@ -1,0 +1,47 @@
+.filter-buttons {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	button {
+		background: none repeat scroll 0 0 transparent;
+		border: none;
+		border-bottom: solid $gray;
+		border-spacing: 0;
+		color: #c5c5c5;
+		font-size: 1em;
+		font-weight: normal;
+		list-style: none outside none;
+		margin: 0;
+		padding: 0.5em 1em;
+		text-align: left;
+		text-decoration: none;
+		text-indent: 0;
+
+		&.active {
+			border-bottom: solid #b1b1b1;
+			color: #7b7b7b;
+		}
+	}
+}
+
+.recipe-card-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-gap: 25px;
+}
+
+@media screen and (min-width: $breakpoint-tablet) {
+	.recipe-card-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+@media screen and (min-width: $breakpoint-laptop) {
+	.recipe-card-grid {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
+@media screen and (min-width: $breakpoint-desktop) {
+	.recipe-card-grid {
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+	}
+}

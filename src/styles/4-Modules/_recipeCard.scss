@@ -1,0 +1,53 @@
+.recipe-card {
+	margin: 20px auto;
+	text-align: center;
+
+	.card-title {
+		font-family: 'Raleway', sans-serif;
+		font-weight: 700;
+		margin-top: 0;
+	}
+}
+.card-image-container {
+	position: relative;
+
+	img {
+		object-fit: cover;
+		width: 300px;
+		height: 300px;
+		opacity: 0.8;
+	}
+	.recipe-buttons {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		-ms-transform: translate(-50%, -50%);
+		text-align: center;
+		display: flex;
+		flex-wrap: wrap;
+		transition: all 1s ease-out;
+		width: 60%;
+	}
+	.button {
+		margin: 5px auto;
+	}
+}
+
+@media screen and (min-width: $breakpoint-tablet) {
+	.card-image-container {
+		opacity: 1;
+
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+	.recipe-buttons {
+		display: none;
+	}
+
+	.card-image-container:hover > .recipe-buttons {
+		display: flex;
+		flex-wrap: wrap;
+	}
+}
