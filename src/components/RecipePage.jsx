@@ -66,20 +66,3 @@ const RecipePage = () => {
 };
 
 export default RecipePage;
-{
-	/* <div>
-	<h1>{name}</h1>
-	<img src={image} alt='...' />
-	<p>{description}</p>
-	<div>
-		<div>
-			<h2>Ingredients</h2>
-			<ul>{ingredientsList}</ul>
-		</div>
-	</div>
-	<div>
-		<h2>Directions</h2>
-		<ul>{instructionsList()}</ul>
-	</div>
-</div>; */
-}

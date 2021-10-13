@@ -40,14 +40,3 @@ const RecipeGridDisplay = () => {
 };
 
 export default RecipeGridDisplay;
-{
-	/* <div className='container'>
-	<div className='filter-buttons'>
-		<button>Food</button>
-		<button>Beverages</button>
-		<button>Dessert</button>
-		<button>Pudding</button>
-	</div>
-	<div className='row g-0'>{recipes && displayRecipes()}</div>
-</div>; */
-}
