@@ -50,7 +50,7 @@ const Navigation = () => {
 						<NavLink to='/login' onClick={toggleMenu}>Login</NavLink>
 					</li> */}
 					<li>
-						<NavLink to='/newRecipe' onClick={toggleMenu}>
+						<NavLink to='/recipes/new' onClick={toggleMenu}>
 							Create Recipe
 						</NavLink>
 					</li>

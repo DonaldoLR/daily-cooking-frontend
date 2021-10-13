@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 const NewRecipeForm = () => {
 	const BASE_URL = process.env.REACT_APP_BASE_URL;
 	const history = useHistory();
 	const [formData, setFormData] = useState({
-		name: "",
-		description: "",
-		image: "",
-		instructions: [""],
+		name: '',
+		description: '',
+		image: '',
+		instructions: [''],
 	});
 	const [serverErrors, setServerErrors] = useState([]);
 	const [availableIngredients, setAvailableIngredients] = useState(null);
 	const [recipeIngredients, setRecipeIngredients] = useState([
-		{ ingredientID: 0, ingredient_quantity: 0, ingredient_description: "" },
+		{ ingredientID: 0, ingredient_quantity: 0, ingredient_description: '' },
 	]);
 	useEffect(() => {
 		fetch(`${BASE_URL}/ingredients`)
@@ -23,11 +23,11 @@ const NewRecipeForm = () => {
 		const key = e.target.name;
 		const value = e.target.value;
 		const ingredientInputNames = [
-			"ingredientID",
-			"ingredient_quantity",
-			"ingredient_description",
+			'ingredientID',
+			'ingredient_quantity',
+			'ingredient_description',
 		];
-		if (key === "instruction") {
+		if (key === 'instruction') {
 			const updatedInstructions = formData.instructions.map(
 				(instruction, idx) => {
 					if (idx === index) {
@@ -40,8 +40,12 @@ const NewRecipeForm = () => {
 			setFormData({ ...formData, instructions: updatedInstructions });
 		} else if (ingredientInputNames.includes(key)) {
 			const updatedIngredientValues = [...recipeIngredients];
-			if (key !== "ingredient_description") {
-				updatedIngredientValues[index][key] = parseInt(value, 10);
+			if (key !== 'ingredient_description') {
+				if (value === '') {
+					updatedIngredientValues[index][key] = 0;
+				} else {
+					updatedIngredientValues[index][key] = parseInt(value, 10);
+				}
 			} else {
 				updatedIngredientValues[index][key] = value;
 			}
@@ -51,20 +55,22 @@ const NewRecipeForm = () => {
 		}
 	};
 	const addInput = (e) => {
+		e.preventDefault();
 		const key = e.target.name;
-		if (key === "ingredient") {
+		if (key === 'ingredient') {
 			const updatedIngredients = [
 				...recipeIngredients,
-				{ ingredientID: 0, ingredient_quantity: 0, ingredient_description: "" },
+				{ ingredientID: 0, ingredient_quantity: 0, ingredient_description: '' },
 			];
 			setRecipeIngredients(updatedIngredients);
 		} else {
-			const updatedInstructions = [...formData.instructions, ""];
+			const updatedInstructions = [...formData.instructions, ''];
 			setFormData({ ...formData, instructions: updatedInstructions });
 		}
 	};
 	const removeInput = (idx, e) => {
-		if (e.target.name === "ingredient") {
+		e.preventDefault();
+		if (e.target.name === 'ingredient') {
 			if (recipeIngredients.length === 1) {
 				console.log(`can not remove all inputs`);
 			} else {
@@ -86,29 +92,25 @@ const NewRecipeForm = () => {
 	};
 	const displayInstructionInputs = () => {
 		return formData.instructions.map((instruction, index) => (
-			<div key={index} className='mb-3'>
-				<label className='form-label'>
+			<div key={index} className='instructions-input-container'>
+				<label className='form-label' htmlFor='instruction-input'>
 					Step:
-					<input
-						type='text'
-						className='form-control'
-						value={instruction}
-						name='instruction'
-						onChange={(e) => handleInputChange(index, e)}
-					/>
 				</label>
-				<button
-					type='button'
-					className='btn btn-outline-success'
-					onClick={addInput}
-				>
+				<textarea
+					type='text'
+					className='form-control'
+					id='instruction-input'
+					value={instruction}
+					name='instruction'
+					onChange={(e) => handleInputChange(index, e)}
+				/>
+				<button type='button' className='button' onClick={addInput}>
 					Add Step
 				</button>
 				<button
 					type='button'
-					className='btn btn-outline-danger'
-					onClick={(e) => removeInput(index, e)}
-				>
+					className='button'
+					onClick={(e) => removeInput(index, e)}>
 					Remove Step
 				</button>
 			</div>
@@ -122,63 +124,54 @@ const NewRecipeForm = () => {
 		return sortedIngredients.map((ingredient) => (
 			<option
 				key={`${ingredient.id} - ${ingredient.name}`}
-				value={ingredient.id}
-			>
+				value={ingredient.id}>
 				{ingredient.name}
 			</option>
 		));
 	};
 	const displayIngredientInputs = () => {
 		return recipeIngredients.map((input, idx) => (
-			<div key={idx} className='input-group'>
-				<label className='form-label'>
+			<div key={idx} className='input-group ingredient-input-container'>
+				<label className='form-label' htmlFor='ingredient-selection'>
 					Ingredient
-					<select
-						className='form-select'
-						aria-label='Default select example'
-						value={input.ingredientID}
-						onChange={(e) => handleInputChange(idx, e)}
-						name='ingredientID'
-					>
-						{displayIngredientOptions()}
-					</select>
 				</label>
-				<label className='form-label'>
+				<select
+					id='ingredient-selection'
+					value={input.ingredientID}
+					onChange={(e) => handleInputChange(idx, e)}
+					name='ingredientID'>
+					{displayIngredientOptions()}
+				</select>
+				<label className='form-label' htmlFor='ingredient-quantity'>
 					Quantity
-					<input
-						type='number'
-						aria-label='Quantity'
-						className='form-control'
-						value={input.ingredient_quantity}
-						onChange={(e) => handleInputChange(idx, e)}
-						name='ingredient_quantity'
-					/>
 				</label>
-				<label className='form-label'>
+				<input
+					type='number'
+					id='ingredient-quantity'
+					value={input.ingredient_quantity}
+					onChange={(e) => handleInputChange(idx, e)}
+					name='ingredient_quantity'
+				/>
+				<label className='form-label' htmlFor='ingredient-description'>
 					Description
-					<input
-						type='text'
-						aria-label='Description'
-						className='form-control'
-						value={input.ingredient_description}
-						onChange={(e) => handleInputChange(idx, e)}
-						name='ingredient_description'
-					/>
 				</label>
+				<textarea
+					type='text'
+					id='ingredient-description'
+					value={input.ingredient_description}
+					onChange={(e) => handleInputChange(idx, e)}
+					name='ingredient_description'
+				/>
 				<button
-					type='button'
-					className='btn btn-outline-success'
+					className='button add-item-btn'
 					onClick={addInput}
-					name='ingredient'
-				>
+					name='ingredient'>
 					Add Ingredient
 				</button>
 				<button
-					type='button'
-					className='btn btn-outline-danger'
+					className='button remove-item-btn'
 					onClick={(event) => removeInput(idx, event)}
-					name='ingredient'
-				>
+					name='ingredient'>
 					Remove Ingredient
 				</button>
 			</div>
@@ -188,7 +181,7 @@ const NewRecipeForm = () => {
 		e.preventDefault();
 		const instructions = formData.instructions
 			.map((instruction) => instruction.trim())
-			.join(". /n ");
+			.join('. /n ');
 		const finalFormData = { ...formData, instructions: instructions };
 		const submitIngredients = async (
 			recipeID,
@@ -197,9 +190,9 @@ const NewRecipeForm = () => {
 			description
 		) => {
 			const response = await fetch(`${BASE_URL}/recipe_ingredients`, {
-				method: "POST",
+				method: 'POST',
 				headers: {
-					"Content-Type": "application/json",
+					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
 					recipe_id: recipeID,
@@ -214,9 +207,9 @@ const NewRecipeForm = () => {
 			}
 		};
 		fetch(`${BASE_URL}/recipes`, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(finalFormData),
 		})
@@ -235,12 +228,12 @@ const NewRecipeForm = () => {
 					});
 					if (serverErrors.length === 0) {
 						setFormData({
-							name: "",
-							description: "",
-							image: "",
-							instructions: [""],
+							name: '',
+							description: '',
+							image: '',
+							instructions: [''],
 						});
-						history.push("/");
+						history.push('/');
 					}
 				}
 			});
@@ -253,47 +246,53 @@ const NewRecipeForm = () => {
 		));
 	};
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className='container display-grid'>
 			{displayErrors()}
-			<div className='mb-3'>
-				<label className='form-label'>
-					Recipe Title:
+			<div className='recipe-info-container'>
+				<div className='mb-3'>
+					<label className='form-label' htmlFor='recipe-title'>
+						Recipe Title:
+					</label>
 					<input
 						type='text'
 						className='form-control'
 						name='name'
+						id='recipe-title'
 						onChange={(e) => handleInputChange(null, e)}
 						value={formData.name}
 					/>
-				</label>
-			</div>
-			<div className='mb-3'>
-				<label className='form-label'>
-					Recipe Description:
-					<input
-						type='text'
-						className='form-control'
-						name='description'
-						onChange={(e) => handleInputChange(null, e)}
-						value={formData.description}
-					/>
-				</label>
-			</div>
-			<div className='mb-3'>
-				<label className='form-label'>
-					Recipe Image Preview:
+				</div>
+				<div className='mb-3'>
+					<label className='form-label' htmlFor='recipe-image'>
+						Recipe Image Preview:
+					</label>
 					<input
 						type='text'
 						className='form-control'
 						name='image'
+						id='recipe-image'
 						onChange={(e) => handleInputChange(null, e)}
 						value={formData.image}
 					/>
-				</label>
+				</div>
+				<div className='mb-3'>
+					<label className='form-label' htmlFor='recipe-description'>
+						Short Description:
+					</label>
+					<textarea
+						type='text'
+						className='form-control'
+						name='description'
+						id='recipe-description'
+						onChange={(e) => handleInputChange(null, e)}
+						value={formData.description}
+					/>
+				</div>
 			</div>
+
 			{availableIngredients && displayIngredientInputs()}
 			{displayInstructionInputs()}
-			<button type='submit' className='btn btn-primary'>
+			<button type='submit' className='form-button button'>
 				Submit
 			</button>
 		</form>
@@ -301,3 +300,49 @@ const NewRecipeForm = () => {
 };
 
 export default NewRecipeForm;
+{
+	/* <form onSubmit={handleSubmit}>
+	{displayErrors()}
+	<div className='mb-3'>
+		<label className='form-label'>
+			Recipe Title:
+			<input
+				type='text'
+				className='form-control'
+				name='name'
+				onChange={(e) => handleInputChange(null, e)}
+				value={formData.name}
+			/>
+		</label>
+	</div>
+	<div className='mb-3'>
+		<label className='form-label'>
+			Recipe Description:
+			<input
+				type='text'
+				className='form-control'
+				name='description'
+				onChange={(e) => handleInputChange(null, e)}
+				value={formData.description}
+			/>
+		</label>
+	</div>
+	<div className='mb-3'>
+		<label className='form-label'>
+			Recipe Image Preview:
+			<input
+				type='text'
+				className='form-control'
+				name='image'
+				onChange={(e) => handleInputChange(null, e)}
+				value={formData.image}
+			/>
+		</label>
+	</div>
+	{availableIngredients && displayIngredientInputs()}
+	{displayInstructionInputs()}
+	<button type='submit' className='btn btn-primary'>
+		Submit
+	</button>
+</form>; */
+}
