@@ -1,0 +1,7 @@
+@media screen and (min-width: $breakpoint-desktop) {
+	.form-button-containers {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		grid-gap: 10px;
+	}
+}

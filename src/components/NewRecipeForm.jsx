@@ -97,6 +97,7 @@ const NewRecipeForm = () => {
 					Step:
 				</label>
 				<textarea
+					rows='4'
 					type='text'
 					className='form-control'
 					id='instruction-input'
@@ -104,15 +105,14 @@ const NewRecipeForm = () => {
 					name='instruction'
 					onChange={(e) => handleInputChange(index, e)}
 				/>
-				<button type='button' className='button' onClick={addInput}>
-					Add Step
-				</button>
-				<button
-					type='button'
-					className='button'
-					onClick={(e) => removeInput(index, e)}>
-					Remove Step
-				</button>
+				<div className='form-button-containers'>
+					<button
+						type='button'
+						className='button form-button'
+						onClick={(e) => removeInput(index, e)}>
+						Remove Step
+					</button>
+				</div>
 			</div>
 		));
 	};
@@ -137,9 +137,12 @@ const NewRecipeForm = () => {
 				</label>
 				<select
 					id='ingredient-selection'
-					value={input.ingredientID}
+					value={0}
 					onChange={(e) => handleInputChange(idx, e)}
 					name='ingredientID'>
+					<option key={`default ingredient selection`} defaultValue>
+						Please select an ingredient
+					</option>
 					{displayIngredientOptions()}
 				</select>
 				<label className='form-label' htmlFor='ingredient-quantity'>
@@ -156,24 +159,21 @@ const NewRecipeForm = () => {
 					Description
 				</label>
 				<textarea
+					rows='4'
 					type='text'
 					id='ingredient-description'
 					value={input.ingredient_description}
 					onChange={(e) => handleInputChange(idx, e)}
 					name='ingredient_description'
 				/>
-				<button
-					className='button add-item-btn'
-					onClick={addInput}
-					name='ingredient'>
-					Add Ingredient
-				</button>
-				<button
-					className='button remove-item-btn'
-					onClick={(event) => removeInput(idx, event)}
-					name='ingredient'>
-					Remove Ingredient
-				</button>
+				<div className='form-button-containers'>
+					<button
+						className='button form-button'
+						onClick={(event) => removeInput(idx, event)}
+						name='ingredient'>
+						Remove Ingredient
+					</button>
+				</div>
 			</div>
 		));
 	};
@@ -280,6 +280,7 @@ const NewRecipeForm = () => {
 						Short Description:
 					</label>
 					<textarea
+						rows='4'
 						type='text'
 						className='form-control'
 						name='description'
@@ -289,60 +290,37 @@ const NewRecipeForm = () => {
 					/>
 				</div>
 			</div>
-
-			{availableIngredients && displayIngredientInputs()}
-			{displayInstructionInputs()}
-			<button type='submit' className='form-button button'>
-				Submit
-			</button>
+			<div className='display-grid ingredients-container'>
+				<h2>Ingredients:</h2>
+				{availableIngredients && displayIngredientInputs()}
+				<div className='form-button-containers'>
+					<button
+						className='button add-item-btn form-button'
+						onClick={addInput}
+						name='ingredient'>
+						Add Ingredient
+					</button>
+				</div>
+			</div>
+			<div className='display-grid instructions-container'>
+				<h2>Instructions</h2>
+				{displayInstructionInputs()}
+				<div className='form-button-containers'>
+					<button
+						type='button'
+						className='button form-button'
+						onClick={addInput}>
+						Add Step
+					</button>
+				</div>
+			</div>
+			<div className='form-button-containers'>
+				<button type='submit' className='button form-button'>
+					Submit
+				</button>
+			</div>
 		</form>
 	);
 };
 
 export default NewRecipeForm;
-{
-	/* <form onSubmit={handleSubmit}>
-	{displayErrors()}
-	<div className='mb-3'>
-		<label className='form-label'>
-			Recipe Title:
-			<input
-				type='text'
-				className='form-control'
-				name='name'
-				onChange={(e) => handleInputChange(null, e)}
-				value={formData.name}
-			/>
-		</label>
-	</div>
-	<div className='mb-3'>
-		<label className='form-label'>
-			Recipe Description:
-			<input
-				type='text'
-				className='form-control'
-				name='description'
-				onChange={(e) => handleInputChange(null, e)}
-				value={formData.description}
-			/>
-		</label>
-	</div>
-	<div className='mb-3'>
-		<label className='form-label'>
-			Recipe Image Preview:
-			<input
-				type='text'
-				className='form-control'
-				name='image'
-				onChange={(e) => handleInputChange(null, e)}
-				value={formData.image}
-			/>
-		</label>
-	</div>
-	{availableIngredients && displayIngredientInputs()}
-	{displayInstructionInputs()}
-	<button type='submit' className='btn btn-primary'>
-		Submit
-	</button>
-</form>; */
-}
