@@ -32,7 +32,9 @@ const RecipeGridDisplay = () => {
 				<button>Dessert</button>
 				<button>Pudding</button>
 			</div>
-			<div className='recipe-card-grid'>{recipes && displayRecipes()}</div>
+			<div className='recipe-card-grid display-grid'>
+				{recipes && displayRecipes()}
+			</div>
 		</div>
 	);
 };

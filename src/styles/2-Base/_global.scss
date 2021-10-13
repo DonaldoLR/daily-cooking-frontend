@@ -55,9 +55,16 @@ small,
 .container {
 	margin: 0 auto;
 	max-width: 80%;
+	padding: 10vh 0;
 }
 
 img {
 	height: auto;
 	max-width: 100%;
+}
+ul {
+	list-style: none;
+}
+.display-grid {
+	display: grid;
 }

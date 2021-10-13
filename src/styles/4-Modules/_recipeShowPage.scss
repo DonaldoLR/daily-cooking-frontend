@@ -1,0 +1,33 @@
+.ingredient-item {
+	padding: 5px 10px;
+
+	&:nth-child(odd) {
+		background-color: #eeeeee;
+	}
+	&:nth-child(even) {
+		background-color: #f4f4f4;
+	}
+}
+.recipe-show-page {
+	h1 {
+		text-align: center;
+	}
+}
+.instruction-step {
+	padding-bottom: 10px;
+}
+#ingredient-headline {
+	margin: 0;
+	padding: 5px 10px;
+	color: white;
+	background-color: black;
+}
+
+@media screen and (min-width: $breakpoint-tablet) {
+	.recipe-show-page {
+		.display-grid {
+			grid-template-columns: 1fr 1fr;
+			grid-gap: 20px;
+		}
+	}
+}
