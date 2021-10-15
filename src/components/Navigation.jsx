@@ -24,13 +24,13 @@ const Navigation = () => {
 					</span>
 				</button>
 				<ul className={menuToggle ? 'open' : ''}>
-					<li>
+					{/* <li>
 						<NavLink to='/' onClick={toggleMenu}>
 							Home
 						</NavLink>
-					</li>
+					</li> */}
 					<li>
-						<NavLink to='/recipes' onClick={toggleMenu}>
+						<NavLink to='/' onClick={toggleMenu}>
 							Recipes
 						</NavLink>
 					</li>

@@ -85,15 +85,16 @@ const EditRecipeForm = () => {
 			setFormData({ ...formData, instructions: updatedInstructions });
 		} else if (ingredientInputNames.includes(key)) {
 			const updatedIngredientValues = [...recipeIngredients];
-			if (key !== 'ingredient_description') {
-				if (value === '') {
-					updatedIngredientValues[index][key] = 0;
-				} else {
-					updatedIngredientValues[index][key] = parseInt(value, 10);
-				}
-			} else {
-				updatedIngredientValues[index][key] = value;
-			}
+			// if (key !== 'ingredient_description') {
+			// 	if (parseFloat(value) <= 0) {
+			// 		updatedIngredientValues[index][key] = 0;
+			// 	} else {
+			// 		updatedIngredientValues[index][key] = parseFloat(value);
+			// 	}
+			// } else {
+			// 	updatedIngredientValues[index][key] = value;
+			// }
+			updatedIngredientValues[index][key] = value;
 			setRecipeIngredients(updatedIngredientValues);
 		} else {
 			setFormData({ ...formData, [key]: value });
@@ -194,7 +195,7 @@ const EditRecipeForm = () => {
 					Quantity
 				</label>
 				<input
-					type='number'
+					type='text'
 					id='ingredient-quantity'
 					value={input.ingredient_quantity}
 					onChange={(e) => handleInputChange(idx, e)}
@@ -277,7 +278,7 @@ const EditRecipeForm = () => {
 						submitIngredients(
 							data.id,
 							ingredient.ingredientID,
-							ingredient.ingredient_quantity,
+							parseFloat(ingredient.ingredient_quantity),
 							ingredient.ingredient_description,
 							ingredient.recipe_ingredient_id
 						);
@@ -294,7 +295,7 @@ const EditRecipeForm = () => {
 		));
 	};
 	const handleDelete = (e) => {
-		e.stopPropagation();
+		e.preventDefault();
 		fetch(`${BASE_URL}/recipes/${id}`, {
 			method: 'DELETE',
 			headers: {

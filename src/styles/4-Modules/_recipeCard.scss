@@ -13,7 +13,6 @@
 
 	img {
 		object-fit: cover;
-		width: 300px;
 		height: 300px;
 		opacity: 0.8;
 	}
@@ -28,18 +27,26 @@
 		flex-wrap: wrap;
 		transition: all 1s ease-out;
 		width: 60%;
+		flex-direction: row;
 	}
 	.button {
 		margin: 5px auto;
+		flex: 1 0 50%;
 	}
 }
 
-@media screen and (min-width: $breakpoint-tablet) {
+@media screen and (min-width: $breakpoint-laptop) {
 	.card-image-container {
 		opacity: 1;
-
+		.recipe-buttons {
+			display: none;
+		}
 		&:hover {
 			opacity: 0.8;
+		}
+
+		&:hover + .recipe-buttons {
+			display: inline-block;
 		}
 	}
 	.recipe-buttons {

@@ -1,10 +1,10 @@
-import "./styles/main.scss";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import EditRecipeForm from "./components/EditRecipeForm";
-import Navigation from "./components/Navigation";
-import NewRecipeForm from "./components/NewRecipeForm";
-import RecipePage from "./components/RecipePage";
-import RecipeGridDisplay from "./components/RecipesGridDisplay";
+import './styles/main.scss';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import EditRecipeForm from './components/EditRecipeForm';
+import Navigation from './components/Navigation';
+import NewRecipeForm from './components/NewRecipeForm';
+import RecipePage from './components/RecipePage';
+import RecipeGridDisplay from './components/RecipesGridDisplay';
 
 function App() {
 	// const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -14,7 +14,7 @@ function App() {
 			<div className='App'>
 				<Navigation />
 				<Switch>
-					<Route exact path='/recipes'>
+					<Route exact path='/'>
 						<RecipeGridDisplay />
 					</Route>
 					<Route exact path='/recipes/new'>

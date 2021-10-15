@@ -40,15 +40,16 @@ const NewRecipeForm = () => {
 			setFormData({ ...formData, instructions: updatedInstructions });
 		} else if (ingredientInputNames.includes(key)) {
 			const updatedIngredientValues = [...recipeIngredients];
-			if (key !== 'ingredient_description') {
-				if (value === '') {
-					updatedIngredientValues[index][key] = 0;
-				} else {
-					updatedIngredientValues[index][key] = parseInt(value, 10);
-				}
-			} else {
-				updatedIngredientValues[index][key] = value;
-			}
+			// if (key !== 'ingredient_description') {
+			// 	if (parseFloat(value) < 0) {
+			// 		updatedIngredientValues[index][key] = 0;
+			// 	} else {
+			// 		updatedIngredientValues[index][key] = parseFloat(value);
+			// 	}
+			// } else {
+			// 	updatedIngredientValues[index][key] = value;
+			// }
+			updatedIngredientValues[index][key] = value;
 			setRecipeIngredients(updatedIngredientValues);
 		} else {
 			setFormData({ ...formData, [key]: value });
@@ -137,7 +138,7 @@ const NewRecipeForm = () => {
 				</label>
 				<select
 					id='ingredient-selection'
-					value={0}
+					value={input.ingredientID}
 					onChange={(e) => handleInputChange(idx, e)}
 					name='ingredientID'>
 					<option key={`default ingredient selection`} defaultValue>
@@ -149,7 +150,7 @@ const NewRecipeForm = () => {
 					Quantity
 				</label>
 				<input
-					type='number'
+					type='text'
 					id='ingredient-quantity'
 					value={input.ingredient_quantity}
 					onChange={(e) => handleInputChange(idx, e)}
@@ -182,6 +183,7 @@ const NewRecipeForm = () => {
 		const instructions = formData.instructions
 			.map((instruction) => instruction.trim())
 			.join('. /n ');
+
 		const finalFormData = { ...formData, instructions: instructions };
 		const submitIngredients = async (
 			recipeID,
@@ -222,7 +224,7 @@ const NewRecipeForm = () => {
 						submitIngredients(
 							data.id,
 							ingredient.ingredientID,
-							ingredient.ingredient_quantity,
+							parseFloat(ingredient.ingredient_quantity),
 							ingredient.ingredient_description
 						);
 					});

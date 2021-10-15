@@ -26,12 +26,12 @@ const RecipeGridDisplay = () => {
 	};
 	return (
 		<div className='container'>
-			<div className='filter-buttons'>
+			{/* <div className='filter-buttons'>
 				<button>Food</button>
 				<button>Beverages</button>
 				<button>Dessert</button>
 				<button>Pudding</button>
-			</div>
+			</div> */}
 			<div className='recipe-card-grid display-grid'>
 				{recipes && displayRecipes()}
 			</div>
