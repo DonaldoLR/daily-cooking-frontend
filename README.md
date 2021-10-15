@@ -6,9 +6,7 @@ Daily Cooking Helper helps users view recipes and allows them to add all require
 
 ## User Stories
 
-- A visitor should get a new recipe every time they refresh the website so they do not have to decide what to cook
 - A visitor should be able to view the listed ingredients and tools needed, instructions and how long it will take
-- A visitor should be able to add all the required ingredients and or tools to their cart
 
 ## MVP
 
