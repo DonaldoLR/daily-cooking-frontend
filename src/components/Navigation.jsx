@@ -11,7 +11,7 @@ const Navigation = () => {
 		<nav>
 			<div className='container'>
 				<div className='brand'>
-					<NavLink to='/'>Culinier</NavLink>
+					<NavLink to='/'>Cuisine</NavLink>
 				</div>
 				<button
 					className={
