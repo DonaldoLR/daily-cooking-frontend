@@ -11,7 +11,6 @@ Daily Cooking Helper helps users view recipes and allows them to add all require
 ## MVP
 
 - User can view a recipe
-- User can skip recipes
 
 ## Stretch Feature
 
